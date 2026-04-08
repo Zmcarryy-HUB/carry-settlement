@@ -4,382 +4,347 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d0f14">
-  <link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>캐리 정산</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg0:#0d0f14;--bg1:#151821;--bg2:#1c2030;--bg3:#252a3a;--bg4:#303750;
-  --tx:#e4e7f0;--tx2:#8b93a7;--tx3:#565e72;
-  --am:#f5a623;--am2:#e09215;--amb:rgba(245,166,35,.12);
-  --gn:#34d399;--gnb:rgba(52,211,153,.12);
-  --rd:#f87171;--rdb:rgba(248,113,113,.12);
-  --bl:#60a5fa;--blb:rgba(96,165,250,.12);
-  --brd:#262d3d;--r:10px;--rs:7px;
-  --sab:env(safe-area-inset-bottom,0px);
-}
-html{font-family:'Pretendard',system-ui,sans-serif;font-size:14px;background:var(--bg0);color:var(--tx);-webkit-text-size-adjust:100%}
-body{min-height:100dvh;padding-bottom:calc(60px + var(--sab));overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+:root{--bg0:#0d0f14;--bg1:#151821;--bg2:#1c2030;--bg3:#252a3a;--bg4:#303750;--tx:#e4e7f0;--tx2:#8b93a7;--tx3:#565e72;--am:#f5a623;--am2:#e09215;--amb:rgba(245,166,35,.12);--gn:#34d399;--gnb:rgba(52,211,153,.12);--rd:#f87171;--rdb:rgba(248,113,113,.12);--bl:#60a5fa;--blb:rgba(96,165,250,.12);--brd:#262d3d;--r:12px;--rs:8px;--sab:env(safe-area-inset-bottom,0px)}
+html{font-family:'Pretendard',system-ui,sans-serif;font-size:14px;background:var(--bg0);color:var(--tx)}
+body{min-height:100dvh;padding-bottom:calc(64px + var(--sab));overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 input,select,textarea,button{font:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none}
-input,select,textarea{
-  background:var(--bg3);border:1px solid var(--brd);border-radius:var(--rs);
-  padding:9px 11px;width:100%;outline:none;transition:border .2s;
-}
+input,select,textarea{background:var(--bg3);border:1px solid var(--brd);border-radius:var(--rs);padding:10px 12px;width:100%;outline:none;transition:border .2s;font-size:14px}
 input:focus,select:focus,textarea:focus{border-color:var(--am)}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238b93a7' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
 textarea{resize:vertical;min-height:56px}
-.hdr{position:sticky;top:0;z-index:100;background:var(--bg0);border-bottom:1px solid var(--brd);padding:10px 14px;display:flex;align-items:center;gap:10px}
-.hdr h1{font-size:16px;font-weight:700;flex:1}
-.hdr .back{font-size:18px;width:28px;height:28px;display:none;align-items:center;justify-content:center;border-radius:50%;background:var(--bg3)}
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--bg1);border-top:1px solid var(--brd);display:flex;padding-bottom:var(--sab)}
-.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0;font-size:10px;color:var(--tx3);transition:color .15s;font-weight:500}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(13,15,20,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);padding:11px 16px;display:flex;align-items:center;gap:10px}
+.hdr h1{font-size:17px;font-weight:700;flex:1}
+.hdr .back{font-size:18px;width:30px;height:30px;display:none;align-items:center;justify-content:center;border-radius:50%;background:var(--bg3)}
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(21,24,33,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--brd);display:flex;padding-bottom:var(--sab)}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;font-size:10px;color:var(--tx3);transition:all .15s;font-weight:600}
 .bnav button.on{color:var(--am)}
 .bnav .ni{font-size:20px;line-height:1}
-.vw{display:none;padding:0 14px 20px}
-.vw.on{display:block}
-.cd{background:var(--bg1);border-radius:var(--r);padding:14px;border:1px solid var(--brd);margin-bottom:10px}
-.cd-t{font-size:12px;color:var(--tx2);margin-bottom:7px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.mp{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 0;user-select:none}
-.mp button{width:30px;height:30px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px}
-.mp .ml{font-size:16px;font-weight:700;min-width:130px;text-align:center;cursor:pointer;padding:4px 8px;border-radius:var(--rs)}
+.vw{display:none;padding:0 16px 24px}.vw.on{display:block}
+.cd{background:var(--bg1);border-radius:var(--r);padding:16px;border:1px solid var(--brd);margin-bottom:12px}
+.cd-t{font-size:11px;color:var(--am);margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.mp{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 0;user-select:none}
+.mp button{width:32px;height:32px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:15px;border:1px solid var(--brd)}
+.mp button:active{background:var(--bg3)}
+.mp .ml{font-size:17px;font-weight:700;min-width:130px;text-align:center;cursor:pointer;padding:5px 10px;border-radius:var(--rs)}
 .mp .ml:active{background:var(--bg3)}
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.sc{background:var(--bg1);border-radius:var(--r);padding:12px;border:1px solid var(--brd)}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.sc{background:var(--bg1);border-radius:var(--r);padding:14px;border:1px solid var(--brd);position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:0 2px 2px 0}
+.sc.c-am::after{background:var(--am)}.sc.c-gn::after{background:var(--gn)}.sc.c-rd::after{background:var(--rd)}.sc.c-bl::after{background:var(--bl)}
 .sc.f{grid-column:1/-1}
-.sc .lb{font-size:11px;color:var(--tx2);margin-bottom:3px;font-weight:500}
-.sc .vl{font-size:18px;font-weight:800}
-.si{background:var(--bg1);border-radius:var(--r);padding:12px;border:1px solid var(--brd);margin-bottom:8px;cursor:pointer;transition:border .15s}
-.si:active{border-color:var(--am)}
-.sr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.s-date{font-size:12px;color:var(--tx2)}
-.s-type{font-size:10px;padding:2px 7px;border-radius:14px;background:var(--amb);color:var(--am);font-weight:600}
-.s-name{font-size:14px;font-weight:600}
-.s-amt{font-size:15px;font-weight:800;color:var(--am)}
-.badges{display:flex;gap:5px;margin-top:5px}
-.bdg{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
-.bdg.gn{background:var(--gnb);color:var(--gn)}
-.bdg.rd{background:var(--rdb);color:var(--rd)}
-.fab{position:fixed;bottom:calc(70px + var(--sab));right:16px;z-index:90;width:48px;height:48px;border-radius:50%;background:var(--am);color:#000;font-size:26px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(245,166,35,.35);transition:transform .15s}
-.fab:active{transform:scale(.9)}
+.sc .lb{font-size:11px;color:var(--tx2);margin-bottom:4px;font-weight:500}
+.sc .vl{font-size:19px;font-weight:800}
+.si{background:var(--bg1);border-radius:var(--r);padding:14px;border:1px solid var(--brd);margin-bottom:8px;cursor:pointer;transition:all .15s}
+.si:active{border-color:var(--am);background:var(--bg2)}
+.sr{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.s-date{font-size:12px;color:var(--tx2);font-weight:500}
+.s-type{font-size:10px;padding:3px 8px;border-radius:14px;background:var(--amb);color:var(--am);font-weight:700}
+.s-name{font-size:15px;font-weight:700}
+.s-amt{font-size:16px;font-weight:800;color:var(--am)}
+.badges{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.bdg{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
+.bdg.gn{background:var(--gnb);color:var(--gn)}.bdg.rd{background:var(--rdb);color:var(--rd)}
+.s-workers{font-size:11px;color:var(--tx3);margin-top:4px}
+.fab{position:fixed;bottom:calc(74px + var(--sab));right:18px;z-index:90;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--am),#e8851a);color:#000;font-size:28px;font-weight:400;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(245,166,35,.4);transition:transform .15s}
+.fab:active{transform:scale(.88)}
 .fg{margin-bottom:14px}
-.fl{font-size:12px;color:var(--tx2);margin-bottom:5px;display:block;font-weight:500}
+.fl{font-size:12px;color:var(--tx2);margin-bottom:6px;display:block;font-weight:600}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.cw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px}
-.ch{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;background:var(--bg3);border:1.5px solid var(--brd);cursor:pointer;transition:all .15s;user-select:none}
+.cw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.ch{padding:7px 13px;border-radius:16px;font-size:12px;font-weight:600;background:var(--bg3);border:1.5px solid var(--brd);cursor:pointer;transition:all .15s;user-select:none}
 .ch.on{background:var(--amb);border-color:var(--am);color:var(--am)}
 .ch.add{border-style:dashed;color:var(--tx2)}
-.ec{background:var(--bg3);border-radius:var(--rs);padding:10px;margin-bottom:7px;border:1px solid var(--brd)}
-.ec .eh{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-.ec .en{font-weight:600;font-size:13px}
-.ec .er{color:var(--rd);font-size:16px;padding:2px 4px}
-.ec label{font-size:10px;color:var(--tx3);margin-bottom:2px;display:block}
-.ec input,.ec select{font-size:12px;padding:7px 9px}
-.tabs{display:flex;gap:0;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ch .ch-sub{font-size:9px;color:var(--tx3);margin-left:3px;font-weight:500}
+.ch.on .ch-sub{color:var(--am2)}
+.loc-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.loc-ch{padding:4px 10px;border-radius:12px;font-size:11px;font-weight:500;background:var(--bg3);border:1px solid var(--brd);cursor:pointer;transition:all .15s}
+.loc-ch:active{background:var(--amb);border-color:var(--am);color:var(--am)}
+.ec{background:var(--bg3);border-radius:var(--rs);padding:11px;margin-bottom:7px;border:1px solid var(--brd)}
+.ec .eh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ec .en{font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
+.ec .er{color:var(--rd);font-size:16px;padding:2px 6px;border-radius:50%}
+.ec .er:active{background:var(--rdb)}
+.ec label{font-size:10px;color:var(--tx3);margin-bottom:3px;display:block;font-weight:500}
+.ec input,.ec select{font-size:13px;padding:8px 10px}
+.pay-badge{font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700}
+.pay-badge.cash{background:var(--gnb);color:var(--gn)}
+.pay-badge.trf{background:var(--blb);color:var(--bl)}
+.tabs{display:flex;gap:0;margin-bottom:14px;overflow-x:auto;border-bottom:1px solid var(--brd)}
 .tabs::-webkit-scrollbar{display:none}
-.tb{padding:7px 14px;font-size:12px;font-weight:600;color:var(--tx3);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.tb{padding:9px 16px;font-size:12px;font-weight:600;color:var(--tx3);border-bottom:2.5px solid transparent;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .tb.on{color:var(--am);border-bottom-color:var(--am)}
-.ei{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--brd)}
+.ei{display:flex;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid var(--brd)}
 .ei:last-child{border-bottom:none}
-.ei .ef{flex:1;min-width:0}
-.ei .ec2{font-size:11px;color:var(--tx2)}
-.ei .en2{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ei .ea{font-weight:700;color:var(--am);white-space:nowrap;font-size:13px}
-.ei .ed{color:var(--rd);font-size:14px;padding:2px 6px;flex-shrink:0}
-.rpt{margin-bottom:16px}
-.rpt .rt{font-size:13px;font-weight:700;color:var(--tx2);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--brd)}
-.rr{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}
-.rr.sub{padding-left:14px;color:var(--tx2);font-size:12px}
-.rr.sub2{padding-left:28px;color:var(--tx3);font-size:11px}
-.rr.tot{font-weight:700;border-top:1px solid var(--brd);padding-top:7px;margin-top:3px}
-.sti{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--brd);gap:10px}
-.sti .sl{flex:1;min-width:0}
-.sti .sn{font-weight:600;font-size:13px}
-.sti .ss{font-size:11px;color:var(--tx2)}
-.sti .sr2{display:flex;gap:5px;align-items:center;flex-shrink:0}
-.sbdg{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--tx2);font-weight:600}
-.sbdg.cash{background:var(--gnb);color:var(--gn)}
-.sbdg.trf{background:var(--blb);color:var(--bl)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:10px 18px;border-radius:var(--rs);font-size:13px;font-weight:600;transition:all .15s;width:100%}
-.btn-p{background:var(--am);color:#000}
-.btn-p:active{background:var(--am2)}
+.ei .ef{flex:1;min-width:0}.ei .ec2{font-size:11px;color:var(--tx2);font-weight:500}
+.ei .en2{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ei .ea{font-weight:800;color:var(--am);white-space:nowrap;font-size:14px}
+.ei .ed{color:var(--rd);font-size:14px;padding:4px 8px;flex-shrink:0;border-radius:50%}
+.ei .ed:active{background:var(--rdb)}
+.rpt{margin-bottom:18px}
+.rpt .rt{font-size:13px;font-weight:700;color:var(--tx2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:6px}
+.rr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
+.rr.sub{padding-left:16px;color:var(--tx2);font-size:12px}
+.rr.sub2{padding-left:30px;color:var(--tx3);font-size:11px}
+.rr.tot{font-weight:800;border-top:1.5px solid var(--brd);padding-top:8px;margin-top:4px;font-size:14px}
+.sti{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--brd);gap:10px}
+.sti .sl{flex:1;min-width:0}.sti .sn{font-weight:700;font-size:13px}.sti .ss{font-size:11px;color:var(--tx2)}
+.sti .sr2{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.sbdg{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
+.sbdg.cash{background:var(--gnb);color:var(--gn)}.sbdg.trf{background:var(--blb);color:var(--bl)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:var(--rs);font-size:13px;font-weight:700;transition:all .15s;width:100%}
+.btn-p{background:linear-gradient(135deg,var(--am),#e8851a);color:#000}.btn-p:active{opacity:.85}
 .btn-d{background:var(--rd);color:#fff}
-.btn-o{border:1.5px solid var(--brd);color:var(--tx)}
-.btn-o:active{background:var(--bg3)}
-.btn-s{padding:7px 12px;font-size:12px;width:auto}
-.brow{display:flex;gap:8px}
-.brow .btn{flex:1}
-.ckr{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--brd)}
-.ckr input[type="checkbox"]{width:18px;height:18px;accent-color:var(--am);flex-shrink:0}
-.mo{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .2s}
+.btn-o{border:1.5px solid var(--brd);color:var(--tx)}.btn-o:active{background:var(--bg3)}
+.btn-s{padding:8px 14px;font-size:12px;width:auto}
+.brow{display:flex;gap:8px}.brow .btn{flex:1}
+.ckr{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--brd)}
+.ckr input[type="checkbox"]{width:20px;height:20px;accent-color:var(--am);flex-shrink:0}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .2s}
 .mo.show{opacity:1;visibility:visible}
-.mc{background:var(--bg1);border-radius:14px 14px 0 0;width:100%;max-width:480px;max-height:82vh;overflow-y:auto;padding:18px;transform:translateY(100%);transition:transform .25s ease;overscroll-behavior:contain}
+.mc{background:var(--bg1);border-radius:16px 16px 0 0;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;padding:20px;transform:translateY(100%);transition:transform .25s ease;overscroll-behavior:contain;border:1px solid var(--brd);border-bottom:none}
 .mo.show .mc{transform:translateY(0)}
-.mt{font-size:16px;font-weight:700;margin-bottom:14px}
+.mt{font-size:17px;font-weight:800;margin-bottom:16px}
 .ymo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .15s}
 .ymo.show{opacity:1;visibility:visible}
-.ymp{background:var(--bg1);border-radius:var(--r);padding:18px;width:280px;border:1px solid var(--brd)}
-.yyr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.yyr .yy{font-size:17px;font-weight:700}
-.yyr button{width:30px;height:30px;border-radius:50%;background:var(--bg3);font-size:14px;display:flex;align-items:center;justify-content:center}
-.ymg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.ymb{padding:9px;border-radius:var(--rs);font-size:13px;font-weight:500;background:var(--bg3);text-align:center;transition:all .15s;cursor:pointer}
-.ymb.on{background:var(--am);color:#000;font-weight:700}
-.ymb:active{background:var(--bg4)}
-.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--bg4);color:var(--tx);padding:9px 18px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.ymp{background:var(--bg1);border-radius:var(--r);padding:20px;width:290px;border:1px solid var(--brd)}
+.yyr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.yyr .yy{font-size:18px;font-weight:800}
+.yyr button{width:32px;height:32px;border-radius:50%;background:var(--bg3);font-size:15px;display:flex;align-items:center;justify-content:center;border:1px solid var(--brd)}
+.ymg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.ymb{padding:10px;border-radius:var(--rs);font-size:14px;font-weight:600;background:var(--bg3);text-align:center;cursor:pointer;border:1px solid transparent}
+.ymb.on{background:var(--am);color:#000;font-weight:800}.ymb:active{background:var(--bg4)}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:var(--bg4);color:var(--tx);padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.5);border:1px solid var(--brd)}
 .toast.show{opacity:1}
-.empty{text-align:center;padding:36px 0;color:var(--tx3);font-size:13px}
+.empty{text-align:center;padding:40px 0;color:var(--tx3);font-size:13px}
+.divider{height:1px;background:var(--brd);margin:8px 0}
+.f-hint{font-size:10px;color:var(--tx3);margin-top:4px}
 @media(min-width:540px){.vw{max-width:500px;margin:0 auto}.bnav{justify-content:center}.bnav button{max-width:110px}}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
-<div class="ymo" id="ymO" onclick="event.target===this&&closeYM()">
-<div class="ymp"><div class="yyr"><button onclick="ymY(-1)">◂</button><span class="yy" id="ymYr"></span><button onclick="ymY(1)">▸</button></div><div class="ymg" id="ymG"></div></div>
-</div>
-<header class="hdr" id="hdr">
-<button class="back" id="backBtn" onclick="goBack()">←</button>
-<h1 id="hdrT">현장관리</h1>
-</header>
-<div class="vw on" id="vSites">
-<div class="mp"><button onclick="chgM(-1)">◂</button><span class="ml" id="mL" onclick="openYM()"></span><button onclick="chgM(1)">▸</button></div>
-<div class="sg" id="sSumm"></div>
-<div id="sList"></div>
-</div>
+<div class="ymo" id="ymO" onclick="event.target===this&&closeYM()"><div class="ymp"><div class="yyr"><button onclick="ymY(-1)">◂</button><span class="yy" id="ymYr"></span><button onclick="ymY(1)">▸</button></div><div class="ymg" id="ymG"></div></div></div>
+<header class="hdr"><button class="back" id="backBtn" onclick="goBack()">←</button><h1 id="hdrT">현장관리</h1></header>
+
+<div class="vw on" id="vSites"><div class="mp"><button onclick="chgM(-1)">◂</button><span class="ml" id="mL" onclick="openYM()"></span><button onclick="chgM(1)">▸</button></div><div class="sg" id="sSumm"></div><div id="sList"></div></div>
+
 <div class="vw" id="vForm">
-<div class="cd"><div class="cd-t">기본 정보</div>
-<div class="fg"><label class="fl">날짜</label><input type="date" id="fDate"></div>
-<div class="fg"><label class="fl">고객명</label><input id="fClient" placeholder="고객명"></div>
-<div class="fg"><label class="fl">수입유형</label><select id="fType"><option value="">선택</option><option>프리미엄포장이사</option><option>일반이사</option><option>보관이사</option><option>용달화물</option><option>철거폐기</option><option>에어컨</option><option>입주청소</option><option>기타</option></select></div>
-<div class="fr"><div class="fg"><label class="fl">출발지</label><input id="fOrigin" placeholder="출발지"></div><div class="fg"><label class="fl">도착지</label><input id="fDest" placeholder="도착지"></div></div>
-</div>
-<div class="cd"><div class="cd-t">수입</div>
+<div class="cd"><div class="cd-t">📋 기본 정보</div>
+<div class="fr" style="margin-bottom:14px"><div class="fg" style="margin:0"><label class="fl">날짜</label><input type="date" id="fDate"></div><div class="fg" style="margin:0"><label class="fl">수입유형</label><select id="fType"><option value="">선택</option><option>프리미엄포장이사</option><option>일반이사</option><option>보관이사</option><option>용달화물</option><option>철거폐기</option><option>에어컨</option><option>입주청소</option><option>기타</option></select></div></div>
+<div class="fg"><label class="fl">고객명</label><input id="fClient" placeholder="고객명 또는 현장명"></div>
+<div class="fg"><label class="fl">출발지</label><input id="fOrigin" placeholder="출발지 입력"><div class="loc-chips" id="locO"></div></div>
+<div class="fg"><label class="fl">도착지</label><input id="fDest" placeholder="도착지 입력"><div class="loc-chips" id="locD"></div></div></div>
+
+<div class="cd"><div class="cd-t">💰 수입</div>
 <div class="fr"><div class="fg"><label class="fl">계약금</label><input id="fCon" inputmode="numeric" placeholder="0" onfocus="wf(this)" onblur="wb(this)" onkeydown="wk(event,this)"></div><div class="fg"><label class="fl">잔금</label><input id="fBal" inputmode="numeric" placeholder="0" onfocus="wf(this)" onblur="wb(this)" onkeydown="wk(event,this)"></div></div>
-<div class="fg"><label class="fl">수금상태</label><div class="cw" id="collChips"></div></div>
-</div>
-<div class="cd"><div class="cd-t">투입인원</div>
-<div class="cw" id="wChips"></div>
-<div id="wEntries"></div>
-</div>
-<div class="cd"><div class="cd-t">투입차량</div>
-<div class="cw" id="vChips"></div>
-<div id="vEntries"></div>
-</div>
-<div class="cd"><div class="cd-t">현장 부대비용</div>
-<div id="seEntries"></div>
-<button class="btn btn-o btn-s" style="margin-top:6px" onclick="addSE()">+ 부대비용 추가</button>
-</div>
-<div class="cd"><div class="cd-t">지급상태</div><div class="cw" id="payChips"></div></div>
+<div class="fg"><label class="fl">수금상태</label><div class="cw" id="collChips"></div></div></div>
+
+<div class="cd"><div class="cd-t">👷 투입인원 <span style="font-size:10px;color:var(--tx3);font-weight:500;margin-left:auto">터치 선택 · 일당 자동</span></div>
+<div class="cw" id="wChips"></div><div id="wEntries"></div></div>
+
+<div class="cd"><div class="cd-t">🚛 투입차량</div>
+<div class="cw" id="vChips"></div><div id="vEntries"></div></div>
+
+<div class="cd"><div class="cd-t">📎 현장 부대비용</div>
+<div id="seEntries"></div><button class="btn btn-o btn-s" style="margin-top:6px" onclick="addSE()">+ 추가</button></div>
+
+<div class="cd"><div class="cd-t">💳 지급상태</div><div class="cw" id="payChips"></div></div>
 <div class="fg"><label class="fl">비고</label><textarea id="fNote" placeholder="메모"></textarea></div>
 <div class="brow" style="margin-top:14px"><button class="btn btn-o" onclick="goBack()">취소</button><button class="btn btn-p" id="fSave" onclick="saveSite()">저장</button></div>
-<div id="fDelW" style="margin-top:10px;display:none"><button class="btn btn-d" onclick="delSite()">현장 삭제</button></div>
-</div>
-<div class="vw" id="vExp">
-<div class="mp"><button onclick="chgM(-1)">◂</button><span class="ml" id="mL2" onclick="openYM()"></span><button onclick="chgM(1)">▸</button></div>
+<div id="fDelW" style="margin-top:10px;display:none"><button class="btn btn-d" onclick="delSite()">현장 삭제</button></div></div>
+
+<div class="vw" id="vExp"><div class="mp"><button onclick="chgM(-1)">◂</button><span class="ml" id="mL2" onclick="openYM()"></span><button onclick="chgM(1)">▸</button></div>
 <div class="tabs"><div class="tb on" onclick="expTab('regular',this)">정기지출</div><div class="tb" onclick="expTab('irregular',this)">비정기지출</div><div class="tb" onclick="expTab('business',this)">사업비지출</div></div>
-<div id="expC"></div>
-<button class="btn btn-o" style="margin-top:10px" onclick="openExpM()">+ 항목 추가</button>
-</div>
-<div class="vw" id="vRpt">
-<div class="mp"><button onclick="chgM(-1)">◂</button><span class="ml" id="mL3" onclick="openYM()"></span><button onclick="chgM(1)">▸</button></div>
-<div id="rptC"></div>
-</div>
+<div id="expC"></div><button class="btn btn-o" style="margin-top:10px" onclick="openExpM()">+ 항목 추가</button></div>
+
+<div class="vw" id="vRpt"><div class="mp"><button onclick="chgM(-1)">◂</button><span class="ml" id="mL3" onclick="openYM()"></span><button onclick="chgM(1)">▸</button></div>
+<div id="rptC"></div><div class="brow" style="margin-top:12px"><button class="btn btn-o btn-s" onclick="doExcel()">📊 엑셀 내보내기</button></div></div>
+
 <div class="vw" id="vSet">
-<div class="cd"><div class="cd-t">직원 관리</div><div id="setW"></div><button class="btn btn-o btn-s" style="margin-top:6px" onclick="openWM()">+ 직원 추가</button></div>
-<div class="cd"><div class="cd-t">차량 관리</div><div id="setV"></div><button class="btn btn-o btn-s" style="margin-top:6px" onclick="openVM()">+ 차량 추가</button></div>
-<div class="cd"><div class="cd-t">유류 설정</div><div class="fg"><label class="fl">경유 단가 (원/L)</label><input id="sDiesel" inputmode="numeric" onblur="saveCfg()"></div></div>
-<div class="cd"><div class="cd-t">데이터 관리</div>
-<div class="brow" style="margin-bottom:8px"><button class="btn btn-o btn-s" onclick="doExcel()">📊 엑셀</button><button class="btn btn-o btn-s" onclick="doBkup()">💾 백업</button><button class="btn btn-o btn-s" onclick="$id('restF').click()">📂 복원</button></div>
+<div class="cd"><div class="cd-t">👷 직원 관리</div><div id="setW"></div><button class="btn btn-o btn-s" style="margin-top:6px" onclick="openWM()">+ 직원 추가</button></div>
+<div class="cd"><div class="cd-t">🚛 차량 관리</div><div id="setV"></div><button class="btn btn-o btn-s" style="margin-top:6px" onclick="openVM()">+ 차량 추가</button></div>
+<div class="cd"><div class="cd-t">⛽ 유류 설정</div><div class="fg"><label class="fl">경유 단가 (원/L)</label><input id="sDiesel" inputmode="numeric" onblur="saveCfg()"></div></div>
+<div class="cd"><div class="cd-t">💾 데이터 관리</div>
+<div class="brow" style="margin-bottom:8px"><button class="btn btn-o btn-s" onclick="doBkup()">💾 백업</button><button class="btn btn-o btn-s" onclick="$id('restF').click()">📂 복원</button></div>
 <input type="file" id="restF" accept=".json" style="display:none" onchange="doRestore(event)">
-</div>
-</div>
+<p class="f-hint">⚠️ 주 1회 백업 권장</p></div></div>
+
 <button class="fab" id="fab" onclick="openForm()">+</button>
-<nav class="bnav">
-<button class="on" onclick="nav('sites',this)"><span class="ni">📋</span>현장</button>
-<button onclick="nav('exp',this)"><span class="ni">💰</span>경비</button>
-<button onclick="nav('rpt',this)"><span class="ni">📊</span>손익</button>
-<button onclick="nav('set',this)"><span class="ni">⚙️</span>설정</button>
-</nav>
-<div class="mo" id="mExp" onclick="event.target===this&&closeMo('mExp')">
-<div class="mc">
-<div class="mt" id="emT">경비 추가</div>
+<nav class="bnav"><button class="on" onclick="nav('sites',this)"><span class="ni">📋</span>현장</button><button onclick="nav('exp',this)"><span class="ni">💰</span>경비</button><button onclick="nav('rpt',this)"><span class="ni">📊</span>손익</button><button onclick="nav('set',this)"><span class="ni">⚙️</span>설정</button></nav>
+
+<div class="mo" id="mExp" onclick="event.target===this&&closeMo('mExp')"><div class="mc"><div class="mt" id="emT">경비 추가</div>
 <div class="fg"><label class="fl">카테고리</label><select id="emCat"></select></div>
 <div class="fg"><label class="fl">항목명</label><input id="emItem" placeholder="항목명"></div>
 <div class="fg"><label class="fl">금액</label><input id="emAmt" inputmode="numeric" placeholder="0" onfocus="wf(this)" onblur="wb(this)" onkeydown="wk(event,this)"></div>
 <div class="fg" id="emDG"><label class="fl">날짜</label><input type="date" id="emDate"></div>
 <div class="fg"><label class="fl">비고</label><input id="emNote" placeholder="비고"></div>
-<div class="brow"><button class="btn btn-o" onclick="closeMo('mExp')">취소</button><button class="btn btn-p" onclick="saveExp()">저장</button></div>
-</div></div>
-<div class="mo" id="mW" onclick="event.target===this&&closeMo('mW')">
-<div class="mc">
-<div class="mt">직원 관리</div><input type="hidden" id="wmId">
+<div class="brow"><button class="btn btn-o" onclick="closeMo('mExp')">취소</button><button class="btn btn-p" onclick="saveExp()">저장</button></div></div></div>
+
+<div class="mo" id="mW" onclick="event.target===this&&closeMo('mW')"><div class="mc"><div class="mt">직원 관리</div><input type="hidden" id="wmId">
 <div class="fg"><label class="fl">이름</label><input id="wmNm" placeholder="이름"></div>
 <div class="fg"><label class="fl">지급방식</label><select id="wmMt"><option value="cash">현금</option><option value="transfer">계좌이체</option></select></div>
 <div class="fg"><label class="fl">기본일당</label><input id="wmRt" inputmode="numeric" placeholder="150000" onfocus="wf(this)" onblur="wb(this)" onkeydown="wk(event,this)"></div>
-<div class="brow"><button class="btn btn-o" onclick="closeMo('mW')">취소</button><button class="btn btn-p" onclick="saveWS()">저장</button></div>
-</div></div>
-<div class="mo" id="mV" onclick="event.target===this&&closeMo('mV')">
-<div class="mc">
-<div class="mt">차량 관리</div><input type="hidden" id="vmId">
+<div class="brow"><button class="btn btn-o" onclick="closeMo('mW')">취소</button><button class="btn btn-p" onclick="saveWS()">저장</button></div></div></div>
+
+<div class="mo" id="mV" onclick="event.target===this&&closeMo('mV')"><div class="mc"><div class="mt">차량 관리</div><input type="hidden" id="vmId">
 <div class="fg"><label class="fl">차량명</label><input id="vmNm" placeholder="차량명"></div>
 <div class="fg"><label class="fl">번호판</label><input id="vmPl" placeholder="번호판"></div>
 <div class="fg"><label class="fl">연비 (km/L)</label><input type="number" id="vmEf" placeholder="9" step="0.1"></div>
-<div class="brow"><button class="btn btn-o" onclick="closeMo('mV')">취소</button><button class="btn btn-p" onclick="saveVS()">저장</button></div>
-</div></div>
-<div class="mo" id="mNW" onclick="event.target===this&&closeMo('mNW')">
-<div class="mc">
-<div class="mt">새 인원 추가</div>
+<div class="brow"><button class="btn btn-o" onclick="closeMo('mV')">취소</button><button class="btn btn-p" onclick="saveVS()">저장</button></div></div></div>
+
+<div class="mo" id="mNW" onclick="event.target===this&&closeMo('mNW')"><div class="mc"><div class="mt">새 인원 추가</div>
 <div class="fg"><label class="fl">이름</label><input id="nwNm" placeholder="이름"></div>
 <div class="fg"><label class="fl">일당</label><input id="nwRt" inputmode="numeric" placeholder="150000" onfocus="wf(this)" onblur="wb(this)" onkeydown="wk(event,this)"></div>
 <div class="fg"><label class="fl">지급방식</label><select id="nwMt"><option value="cash">현금</option><option value="transfer">계좌이체</option></select></div>
-<div class="brow"><button class="btn btn-o" onclick="closeMo('mNW')">취소</button><button class="btn btn-p" onclick="addNW()">추가</button></div>
-</div></div>
-<div class="mo" id="mNV" onclick="event.target===this&&closeMo('mNV')">
-<div class="mc">
-<div class="mt">새 차량 추가</div>
+<div class="brow"><button class="btn btn-o" onclick="closeMo('mNW')">취소</button><button class="btn btn-p" onclick="addNW()">추가</button></div></div></div>
+
+<div class="mo" id="mNV" onclick="event.target===this&&closeMo('mNV')"><div class="mc"><div class="mt">새 차량 추가</div>
 <div class="fg"><label class="fl">차량명</label><input id="nvNm" placeholder="차량명"></div>
 <div class="fg"><label class="fl">번호판</label><input id="nvPl" placeholder="번호판"></div>
 <div class="fg"><label class="fl">연비 (km/L)</label><input type="number" id="nvEf" value="9" step="0.1"></div>
-<div class="brow"><button class="btn btn-o" onclick="closeMo('mNV')">취소</button><button class="btn btn-p" onclick="addNV()">추가</button></div>
-</div></div>
+<div class="brow"><button class="btn btn-o" onclick="closeMo('mNV')">취소</button><button class="btn btn-p" onclick="addNV()">추가</button></div></div></div>
+
 <script>
-const $id=id=>document.getElementById(id);
-const $qa=(s,p)=>(p||document).querySelectorAll(s);
-function toast(m){const t=$id('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+const $id=id=>document.getElementById(id);const $qa=(s,p)=>(p||document).querySelectorAll(s);
+function toast(m){const t=$id('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 function openMo(id){$id(id).classList.add('show')}
 function closeMo(id){$id(id).classList.remove('show')}
 async function api(u,m='GET',b=null){const o={method:m,headers:{'Content-Type':'application/json'}};if(b)o.body=JSON.stringify(b);return(await fetch(u,o)).json()}
 function fmt(n){if(n==null||n==='')return'0';return Number(n).toLocaleString('ko-KR')}
 function fmtW(n){return fmt(n)+'원'}
 function pw(s){return parseInt(String(s||'').replace(/[^0-9\-]/g,''))||0}
-function wf(el){el.value=pw(el.value)||''}
+function wf(el){const v=pw(el.value);el.value=v||''}
 function wb(el){const v=pw(el.value);el.value=v?fmtW(v):''}
 function wk(e,el){if(e.key==='Enter'){e.preventDefault();el.blur()}}
-let CM=new Date().toISOString().slice(0,7);
-let CV='sites';
-let EID=null;
-let workers=[],vehicles=[],cfg={};
-let curExpTab='regular';
-let fW=[],fV=[],fSE=[];
-let fColl='paid',fPay='unpaid';
+
+let CM=new Date().toISOString().slice(0,7),CV='sites',EID=null;
+let workers=[],vehicles=[],cfg={},curExpTab='regular';
+let fW=[],fV=[],fSE=[],fColl='paid',fPay='unpaid';
+
 const DIST={강남:40,서초:38,송파:35,강동:30,관악:35,동작:33,영등포:30,마포:25,용산:27,종로:23,중구:25,성동:25,광진:27,동대문:22,성북:20,강북:18,도봉:12,노원:10,중랑:18,은평:22,서대문:24,양천:32,구로:33,금천:36,강서:33,의정부:5,양주:15,동두천:25,포천:30,연천:45,남양주:15,구리:17,하남:32,광주시:40,이천:60,고양:20,파주:30,김포:35,성남:40,분당:42,수원:60,용인:55,화성:70,오산:75,평택:95,안양:35,안산:50,시흥:42,광명:32,군포:40,의왕:42,부천:30,인천:60,송도:65,춘천:80,원주:120,강릉:200,천안:115,아산:120,세종:150,대전:170,청주:140,전주:230,광주:310,목포:350,여수:360,대구:290,경주:320,포항:330,울산:350,부산:390,김해:400,제주:500};
 function estDist(d){if(!d)return 0;for(const[k,v]of Object.entries(DIST))if(d.includes(k))return v;return 0}
 function calcFuel(km,eff){const dp=parseInt(cfg.diesel_price)||1940;return Math.round(km*2/(eff||9)*dp)}
-function nav(v,btn){
-  CV=v;$qa('.vw').forEach(e=>e.classList.remove('on'));$qa('.bnav button').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');$id('backBtn').style.display='none';const fab=$id('fab');
-  if(v==='sites'){$id('vSites').classList.add('on');$id('hdrT').textContent='현장관리';fab.style.display='flex';loadSites()}
-  else if(v==='form'){$id('vForm').classList.add('on');$id('hdrT').textContent=EID?'현장 수정':'현장 등록';fab.style.display='none';$id('backBtn').style.display='flex'}
-  else if(v==='exp'){$id('vExp').classList.add('on');$id('hdrT').textContent='경비관리';fab.style.display='none';loadExp()}
-  else if(v==='rpt'){$id('vRpt').classList.add('on');$id('hdrT').textContent='손익분석';fab.style.display='none';loadRpt()}
-  else if(v==='set'){$id('vSet').classList.add('on');$id('hdrT').textContent='설정';fab.style.display='none';loadSet()}
-  updML();
-}
+
+const LOCS=['강남구','서초구','송파구','강동구','마포구','용산구','영등포구','관악구','구로구','강서구','노원구','도봉구','강북구','의정부','남양주','구리','고양','파주','김포','수원','용인','성남','분당','안양','인천','부천','화성','평택'];
+function renderLoc(tid,iid){$id(tid).innerHTML=LOCS.map(l=>`<span class="loc-ch" onclick="$id('${iid}').value='${l}';${iid==='fDest'?'onDC()':''}">${l}</span>`).join('')}
+function onDC(){fV.forEach(v=>{v.distance_km=estDist($id('fDest').value);v.fuel_cost=calcFuel(v.distance_km,v.eff||parseFloat(cfg.default_fuel_efficiency)||9)});renderVE()}
+
+function nav(v,btn){CV=v;$qa('.vw').forEach(e=>e.classList.remove('on'));$qa('.bnav button').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');$id('backBtn').style.display='none';const fab=$id('fab');
+if(v==='sites'){$id('vSites').classList.add('on');$id('hdrT').textContent='현장관리';fab.style.display='flex';loadSites()}
+else if(v==='form'){$id('vForm').classList.add('on');$id('hdrT').textContent=EID?'현장 수정':'현장 등록';fab.style.display='none';$id('backBtn').style.display='flex'}
+else if(v==='exp'){$id('vExp').classList.add('on');$id('hdrT').textContent='경비관리';fab.style.display='none';loadExp()}
+else if(v==='rpt'){$id('vRpt').classList.add('on');$id('hdrT').textContent='손익분석';fab.style.display='none';loadRpt()}
+else if(v==='set'){$id('vSet').classList.add('on');$id('hdrT').textContent='설정';fab.style.display='none';loadSet()}
+updML()}
 function goBack(){nav('sites',$qa('.bnav button')[0])}
-function updML(){const[y,m]=CM.split('-');const l=`${y}년 ${+m}월`;['mL','mL2','mL3'].forEach(id=>{const e=$id(id);if(e)e.textContent=l})}
+
+function updML(){const[y,m]=CM.split('-');const l=y+'년 '+parseInt(m)+'월';['mL','mL2','mL3'].forEach(id=>{const e=$id(id);if(e)e.textContent=l})}
 function chgM(d){const[y,m]=CM.split('-').map(Number);const dt=new Date(y,m-1+d,1);CM=dt.toISOString().slice(0,7);updML();if(CV==='sites')loadSites();else if(CV==='exp')loadExp();else if(CV==='rpt')loadRpt()}
 let ymYr=new Date().getFullYear();
 function openYM(){ymYr=+CM.split('-')[0];renderYM();$id('ymO').classList.add('show')}
 function closeYM(){$id('ymO').classList.remove('show')}
 function ymY(d){ymYr+=d;renderYM()}
-function renderYM(){$id('ymYr').textContent=ymYr;const cm=+CM.split('-')[1],cy=+CM.split('-')[0];let h='';for(let i=1;i<=12;i++){h+=`<div class="ymb${ymYr===cy&&i===cm?' on':''}" onclick="selYM(${i})">${i}월</div>`}$id('ymG').innerHTML=h}
-function selYM(m){CM=`${ymYr}-${String(m).padStart(2,'0')}`;closeYM();updML();if(CV==='sites')loadSites();else if(CV==='exp')loadExp();else if(CV==='rpt')loadRpt()}
-async function loadSites(){
-  const sites=await api(`/api/sites?month=${CM}`);
-  let ti=0,cp=0,cu=0;
-  sites.forEach(s=>{const inc=(s.contract_amount||0)+(s.balance_amount||0);ti+=inc;if(s.collection_status==='paid')cp+=inc;else cu+=inc});
-  $id('sSumm').innerHTML=`<div class="sc"><div class="lb">현장 수</div><div class="vl" style="color:var(--am)">${sites.length}건</div></div><div class="sc"><div class="lb">총 수입</div><div class="vl" style="color:var(--gn)">${fmtW(ti)}</div></div><div class="sc"><div class="lb">수금완료</div><div class="vl" style="color:var(--gn)">${fmtW(cp)}</div></div><div class="sc"><div class="lb">미수금</div><div class="vl" style="color:var(--rd)">${fmtW(cu)}</div></div>`;
-  if(!sites.length){$id('sList').innerHTML='<div class="empty">등록된 현장이 없습니다</div>';return}
-  $id('sList').innerHTML=sites.map(s=>{const inc=(s.contract_amount||0)+(s.balance_amount||0);const dd=s.date?s.date.slice(5).replace('-','/'):''
-    return`<div class="si" onclick="editSite(${s.id})"><div class="sr"><span class="s-date">${dd}</span><span class="s-type">${s.service_type||'기타'}</span></div><div class="sr"><span class="s-name">${s.client_name||'(미입력)'}</span><span class="s-amt">${fmtW(inc)}</span></div><div class="badges"><span class="bdg ${s.collection_status==='paid'?'gn':'rd'}">${s.collection_status==='paid'?'수금완료':'미수금'}</span><span class="bdg ${s.payment_status==='paid'?'gn':'rd'}">${s.payment_status==='paid'?'지급완료':'미지급'}</span></div></div>`}).join('');
-}
-async function openForm(sid){
-  EID=sid||null;fW=[];fV=[];fSE=[];fColl='paid';fPay='unpaid';
-  workers=await api('/api/workers');vehicles=await api('/api/vehicles');cfg=await api('/api/settings');
-  if(sid){
-    const s=await api(`/api/sites/${sid}`);$id('fDate').value=s.date;$id('fClient').value=s.client_name||'';
-    $id('fType').value=s.service_type||'';$id('fOrigin').value=s.origin||'';$id('fDest').value=s.destination||'';
-    $id('fCon').value=s.contract_amount?fmtW(s.contract_amount):'';$id('fBal').value=s.balance_amount?fmtW(s.balance_amount):'';
-    $id('fNote').value=s.notes||'';fColl=s.collection_status||'paid';fPay=s.payment_status||'unpaid';
-    fW=(s.workers||[]).map(w=>({worker_name:w.worker_name,daily_rate:w.daily_rate,additional_pay:w.additional_pay,payment_method:w.payment_method}));
-    fV=(s.vehicles||[]).map(v=>({vehicle_name:v.vehicle_name,plate:v.plate,vehicle_cost:v.vehicle_cost,distance_km:v.distance_km,fuel_cost:v.fuel_cost,eff:0}));
-    fSE=(s.expenses||[]).map(e=>({category:e.category,amount:e.amount,note:e.note}));
-    $id('fDelW').style.display='block';$id('fSave').textContent='수정';
-  }else{
-    $id('fDate').value=new Date().toISOString().slice(0,10);['fClient','fType','fOrigin','fDest','fCon','fBal','fNote'].forEach(id=>$id(id).value='');
-    $id('fDelW').style.display='none';$id('fSave').textContent='저장';
-  }
-  renderColl();renderPay();renderWC();renderVC();renderWE();renderVE();renderSEE();nav('form');
-}
+function renderYM(){$id('ymYr').textContent=ymYr;const cm=+CM.split('-')[1],cy=+CM.split('-')[0];let h='';for(let i=1;i<=12;i++){h+='<div class="ymb'+(ymYr===cy&&i===cm?' on':'')+'" onclick="selYM('+i+')">'+i+'월</div>'}$id('ymG').innerHTML=h}
+function selYM(m){CM=ymYr+'-'+String(m).padStart(2,'0');closeYM();updML();if(CV==='sites')loadSites();else if(CV==='exp')loadExp();else if(CV==='rpt')loadRpt()}
+
+async function loadSites(){const sites=await api('/api/sites?month='+CM);let ti=0,cp=0,cu=0;
+sites.forEach(s=>{const inc=(s.contract_amount||0)+(s.balance_amount||0);ti+=inc;if(s.collection_status==='paid')cp+=inc;else cu+=inc});
+$id('sSumm').innerHTML='<div class="sc c-am"><div class="lb">현장</div><div class="vl" style="color:var(--am)">'+sites.length+'건</div></div><div class="sc c-gn"><div class="lb">총 수입</div><div class="vl" style="color:var(--gn)">'+fmtW(ti)+'</div></div><div class="sc c-gn"><div class="lb">수금완료</div><div class="vl" style="color:var(--gn)">'+fmtW(cp)+'</div></div><div class="sc c-rd"><div class="lb">미수금</div><div class="vl" style="color:var(--rd)">'+fmtW(cu)+'</div></div>';
+if(!sites.length){$id('sList').innerHTML='<div class="empty">등록된 현장이 없습니다<br><br>+ 버튼으로 등록</div>';return}
+$id('sList').innerHTML=sites.map(s=>{const inc=(s.contract_amount||0)+(s.balance_amount||0);const dd=s.date?s.date.slice(5).replace('-','/'):''
+const wn=(s.workers||[]).map(w=>w.worker_name).join(', ');const vn=(s.vehicles||[]).map(v=>v.vehicle_name).join(', ');
+return'<div class="si" onclick="editSite('+s.id+')"><div class="sr"><span class="s-date">'+dd+'</span><span class="s-type">'+(s.service_type||'기타')+'</span></div><div class="sr"><span class="s-name">'+(s.client_name||'(미입력)')+'</span><span class="s-amt">'+fmtW(inc)+'</span></div><div class="badges"><span class="bdg '+(s.collection_status==='paid'?'gn':'rd')+'">'+(s.collection_status==='paid'?'수금완료':'미수금')+'</span><span class="bdg '+(s.payment_status==='paid'?'gn':'rd')+'">'+(s.payment_status==='paid'?'지급완료':'미지급')+'</span></div>'+(wn?'<div class="s-workers">👷 '+wn+(vn?' · 🚛 '+vn:'')+'</div>':'')+'</div>'}).join('')}
+
+async function openForm(sid){EID=sid||null;fW=[];fV=[];fSE=[];fColl='paid';fPay='unpaid';
+workers=await api('/api/workers');vehicles=await api('/api/vehicles');cfg=await api('/api/settings');
+if(sid){const s=await api('/api/sites/'+sid);$id('fDate').value=s.date;$id('fClient').value=s.client_name||'';$id('fType').value=s.service_type||'';$id('fOrigin').value=s.origin||'';$id('fDest').value=s.destination||'';$id('fCon').value=s.contract_amount?fmtW(s.contract_amount):'';$id('fBal').value=s.balance_amount?fmtW(s.balance_amount):'';$id('fNote').value=s.notes||'';fColl=s.collection_status||'paid';fPay=s.payment_status||'unpaid';
+fW=(s.workers||[]).map(w=>({worker_name:w.worker_name,daily_rate:w.daily_rate,additional_pay:w.additional_pay,payment_method:w.payment_method}));
+fV=(s.vehicles||[]).map(v=>({vehicle_name:v.vehicle_name,plate:v.plate,vehicle_cost:v.vehicle_cost,distance_km:v.distance_km,fuel_cost:v.fuel_cost,eff:0}));
+fSE=(s.expenses||[]).map(e=>({category:e.category,amount:e.amount,note:e.note}));$id('fDelW').style.display='block';$id('fSave').textContent='수정'}
+else{$id('fDate').value=new Date().toISOString().slice(0,10);['fClient','fType','fOrigin','fDest','fCon','fBal','fNote'].forEach(id=>$id(id).value='');$id('fDelW').style.display='none';$id('fSave').textContent='저장'}
+renderLoc('locO','fOrigin');renderLoc('locD','fDest');renderColl();renderPay();renderWC();renderVC();renderWE();renderVE();renderSEE();nav('form')}
 function editSite(id){openForm(id)}
-function renderColl(){$id('collChips').innerHTML=['paid','unpaid'].map(v=>`<div class="ch${fColl===v?' on':''}" onclick="fColl='${v}';renderColl()">${v==='paid'?'수금완료':'미수금'}</div>`).join('')}
-function renderPay(){$id('payChips').innerHTML=['paid','unpaid'].map(v=>`<div class="ch${fPay===v?' on':''}" onclick="fPay='${v}';renderPay()">${v==='paid'?'지급완료':'미지급'}</div>`).join('')}
-function renderWC(){const sel=new Set(fW.map(w=>w.worker_name));$id('wChips').innerHTML=workers.map(w=>`<div class="ch${sel.has(w.name)?' on':''}" onclick="togW('${w.name}',${w.daily_rate},'${w.payment_method}')">${w.name}</div>`).join('')+`<div class="ch add" onclick="openMo('mNW')">+ 새 인원</div>`}
+
+function renderColl(){$id('collChips').innerHTML=['paid','unpaid'].map(v=>'<div class="ch'+(fColl===v?' on':'')+'" onclick="fColl=\''+v+'\';renderColl()">'+(v==='paid'?'✅ 수금완료':'❌ 미수금')+'</div>').join('')}
+function renderPay(){$id('payChips').innerHTML=['paid','unpaid'].map(v=>'<div class="ch'+(fPay===v?' on':'')+'" onclick="fPay=\''+v+'\';renderPay()">'+(v==='paid'?'✅ 지급완료':'❌ 미지급')+'</div>').join('')}
+
+function renderWC(){const sel=new Set(fW.map(w=>w.worker_name));
+$id('wChips').innerHTML=workers.map(w=>{const ml=w.payment_method==='cash'?'현금':'이체';return'<div class="ch'+(sel.has(w.name)?' on':'')+'" onclick="togW(\''+w.name+'\','+w.daily_rate+',\''+w.payment_method+'\')">'+w.name+'<span class="ch-sub">'+ml+'</span></div>'}).join('')+'<div class="ch add" onclick="openMo(\'mNW\')">+ 새 인원</div>'}
 function togW(nm,rt,mt){const i=fW.findIndex(w=>w.worker_name===nm);if(i>=0)fW.splice(i,1);else fW.push({worker_name:nm,daily_rate:rt,additional_pay:0,payment_method:mt});renderWC();renderWE()}
 function addNW(){const nm=$id('nwNm').value.trim();if(!nm){toast('이름 입력');return}fW.push({worker_name:nm,daily_rate:pw($id('nwRt').value)||150000,additional_pay:0,payment_method:$id('nwMt').value});closeMo('mNW');$id('nwNm').value='';$id('nwRt').value='';renderWC();renderWE()}
-function renderWE(){if(!fW.length){$id('wEntries').innerHTML='';return}$id('wEntries').innerHTML=fW.map((w,i)=>`<div class="ec"><div class="eh"><span class="en">${w.worker_name} <span style="font-size:10px;color:${w.payment_method==='cash'?'var(--gn)':'var(--bl)'}">${w.payment_method==='cash'?'현금':'이체'}</span></span><button class="er" onclick="fW.splice(${i},1);renderWC();renderWE()">✕</button></div><div class="fr"><div><label>기본일당</label><input inputmode="numeric" value="${w.daily_rate?fmtW(w.daily_rate):''}" onfocus="wf(this)" onblur="wb(this);fW[${i}].daily_rate=pw(this.value)" onkeydown="wk(event,this)"></div><div><label>추가지급</label><input inputmode="numeric" value="${w.additional_pay?fmtW(w.additional_pay):''}" onfocus="wf(this)" onblur="wb(this);fW[${i}].additional_pay=pw(this.value)" onkeydown="wk(event,this)"></div></div></div>`).join('')}
-function renderVC(){const sel=new Set(fV.map(v=>v.vehicle_name));$id('vChips').innerHTML=vehicles.map(v=>`<div class="ch${sel.has(v.name)?' on':''}" onclick="togV('${v.name}','${v.plate}',${v.fuel_efficiency})">${v.name}</div>`).join('')+`<div class="ch add" onclick="openMo('mNV')">+ 새 차량</div>`}
+function renderWE(){if(!fW.length){$id('wEntries').innerHTML='';return}
+$id('wEntries').innerHTML=fW.map((w,i)=>'<div class="ec"><div class="eh"><span class="en">'+w.worker_name+' <span class="pay-badge '+(w.payment_method==='cash'?'cash':'trf')+'">'+(w.payment_method==='cash'?'현금':'이체')+'</span></span><button class="er" onclick="fW.splice('+i+',1);renderWC();renderWE()">✕</button></div><div class="fr"><div><label>기본일당</label><input inputmode="numeric" value="'+(w.daily_rate?fmtW(w.daily_rate):'')+'" onfocus="wf(this)" onblur="wb(this);fW['+i+'].daily_rate=pw(this.value)" onkeydown="wk(event,this)"></div><div><label>추가지급</label><input inputmode="numeric" value="'+(w.additional_pay?fmtW(w.additional_pay):'')+'" onfocus="wf(this)" onblur="wb(this);fW['+i+'].additional_pay=pw(this.value)" onkeydown="wk(event,this)"></div></div></div>').join('')}
+
+function renderVC(){const sel=new Set(fV.map(v=>v.vehicle_name));
+$id('vChips').innerHTML=vehicles.map(v=>'<div class="ch'+(sel.has(v.name)?' on':'')+'" onclick="togV(\''+v.name+'\',\''+v.plate+'\','+v.fuel_efficiency+')">'+v.name+'<span class="ch-sub">'+v.plate.slice(-4)+'</span></div>').join('')+'<div class="ch add" onclick="openMo(\'mNV\')">+ 새 차량</div>'}
 function togV(nm,pl,ef){const i=fV.findIndex(v=>v.vehicle_name===nm);if(i>=0){fV.splice(i,1)}else{const dist=estDist($id('fDest').value);fV.push({vehicle_name:nm,plate:pl,vehicle_cost:0,distance_km:dist,fuel_cost:calcFuel(dist,ef),eff:ef})}renderVC();renderVE()}
 function addNV(){const nm=$id('nvNm').value.trim();if(!nm){toast('차량명 입력');return}const pl=$id('nvPl').value.trim();const ef=parseFloat($id('nvEf').value)||9;const dist=estDist($id('fDest').value);fV.push({vehicle_name:nm,plate:pl,vehicle_cost:0,distance_km:dist,fuel_cost:calcFuel(dist,ef),eff:ef});closeMo('mNV');$id('nvNm').value='';$id('nvPl').value='';renderVC();renderVE()}
-function renderVE(){if(!fV.length){$id('vEntries').innerHTML='';return}$id('vEntries').innerHTML=fV.map((v,i)=>`<div class="ec"><div class="eh"><span class="en">${v.vehicle_name} <span style="font-size:10px;color:var(--tx3)">${v.plate||''}</span></span><button class="er" onclick="fV.splice(${i},1);renderVC();renderVE()">✕</button></div><div class="fr3"><div><label>차량비용</label><input inputmode="numeric" value="${v.vehicle_cost?fmtW(v.vehicle_cost):''}" onfocus="wf(this)" onblur="wb(this);fV[${i}].vehicle_cost=pw(this.value)" onkeydown="wk(event,this)"></div><div><label>거리(km)</label><input type="number" value="${v.distance_km||0}" step="1" onchange="updFC(${i},this.value)"></div><div><label>유류비</label><input inputmode="numeric" id="fc${i}" value="${v.fuel_cost?fmtW(v.fuel_cost):''}" onfocus="wf(this)" onblur="wb(this);fV[${i}].fuel_cost=pw(this.value)" onkeydown="wk(event,this)"></div></div></div>`).join('')}
+function renderVE(){if(!fV.length){$id('vEntries').innerHTML='';return}
+$id('vEntries').innerHTML=fV.map((v,i)=>'<div class="ec"><div class="eh"><span class="en">🚛 '+v.vehicle_name+' <span style="font-size:10px;color:var(--tx3)">'+(v.plate||'')+'</span></span><button class="er" onclick="fV.splice('+i+',1);renderVC();renderVE()">✕</button></div><div class="fr3"><div><label>차량비용</label><input inputmode="numeric" value="'+(v.vehicle_cost?fmtW(v.vehicle_cost):'')+'" onfocus="wf(this)" onblur="wb(this);fV['+i+'].vehicle_cost=pw(this.value)" onkeydown="wk(event,this)"></div><div><label>편도km</label><input type="number" value="'+(v.distance_km||0)+'" step="1" onchange="updFC('+i+',this.value)"></div><div><label>유류비(왕복)</label><input inputmode="numeric" id="fc'+i+'" value="'+(v.fuel_cost?fmtW(v.fuel_cost):'')+'" onfocus="wf(this)" onblur="wb(this);fV['+i+'].fuel_cost=pw(this.value)" onkeydown="wk(event,this)"></div></div></div>').join('')}
 function updFC(i,km){fV[i].distance_km=parseFloat(km)||0;fV[i].fuel_cost=calcFuel(fV[i].distance_km,fV[i].eff||parseFloat(cfg.default_fuel_efficiency)||9);const el=$id('fc'+i);if(el)el.value=fmtW(fV[i].fuel_cost)}
-$id('fDest').addEventListener('change',function(){fV.forEach((v,i)=>{v.distance_km=estDist(this.value);v.fuel_cost=calcFuel(v.distance_km,v.eff||parseFloat(cfg.default_fuel_efficiency)||9)});renderVE()});
+$id('fDest').addEventListener('change',onDC);
+
 const SE_CATS=['식대','이동경비','소모품','폐기물처리','기타'];
 function addSE(){fSE.push({category:'식대',amount:0,note:''});renderSEE()}
-function renderSEE(){if(!fSE.length){$id('seEntries').innerHTML='<div style="color:var(--tx3);font-size:12px;padding:6px 0">부대비용 없음</div>';return}$id('seEntries').innerHTML=fSE.map((e,i)=>`<div class="ec"><div class="eh"><select style="width:auto;padding:5px 24px 5px 8px;font-size:12px" onchange="fSE[${i}].category=this.value">${SE_CATS.map(c=>`<option${c===e.category?' selected':''}>${c}</option>`).join('')}</select><button class="er" onclick="fSE.splice(${i},1);renderSEE()">✕</button></div><div class="fr"><div><label>금액</label><input inputmode="numeric" value="${e.amount?fmtW(e.amount):''}" onfocus="wf(this)" onblur="wb(this);fSE[${i}].amount=pw(this.value)" onkeydown="wk(event,this)"></div><div><label>비고</label><input value="${e.note||''}" onchange="fSE[${i}].note=this.value"></div></div></div>`).join('')}
-async function saveSite(){
-  const data={date:$id('fDate').value,client_name:$id('fClient').value,service_type:$id('fType').value,origin:$id('fOrigin').value,destination:$id('fDest').value,contract_amount:pw($id('fCon').value),balance_amount:pw($id('fBal').value),collection_status:fColl,payment_status:fPay,notes:$id('fNote').value,
-    workers:fW.map(w=>({...w,daily_rate:w.daily_rate||0,additional_pay:w.additional_pay||0})),
-    vehicles:fV.map(v=>({vehicle_name:v.vehicle_name,plate:v.plate,vehicle_cost:v.vehicle_cost||0,distance_km:v.distance_km||0,fuel_cost:v.fuel_cost||0})),
-    expenses:fSE.map(e=>({...e,amount:e.amount||0}))};
-  if(!data.date){toast('날짜를 선택하세요');return}
-  if(EID)await api(`/api/sites/${EID}`,'PUT',data);else await api('/api/sites','POST',data);
-  toast(EID?'수정 완료':'등록 완료');CM=data.date.slice(0,7);goBack();
-}
-async function delSite(){if(!confirm('이 현장을 삭제하시겠습니까?'))return;await api(`/api/sites/${EID}`,'DELETE');toast('삭제됨');goBack()}
+function renderSEE(){if(!fSE.length){$id('seEntries').innerHTML='<div style="color:var(--tx3);font-size:12px;padding:6px 0">부대비용 없음</div>';return}
+$id('seEntries').innerHTML=fSE.map((e,i)=>'<div class="ec"><div class="eh"><select style="width:auto;padding:6px 26px 6px 8px;font-size:12px" onchange="fSE['+i+'].category=this.value">'+SE_CATS.map(c=>'<option'+(c===e.category?' selected':'')+'>'+c+'</option>').join('')+'</select><button class="er" onclick="fSE.splice('+i+',1);renderSEE()">✕</button></div><div class="fr"><div><label>금액</label><input inputmode="numeric" value="'+(e.amount?fmtW(e.amount):'')+'" onfocus="wf(this)" onblur="wb(this);fSE['+i+'].amount=pw(this.value)" onkeydown="wk(event,this)"></div><div><label>비고</label><input value="'+(e.note||'')+'" onchange="fSE['+i+'].note=this.value"></div></div></div>').join('')}
+
+async function saveSite(){const data={date:$id('fDate').value,client_name:$id('fClient').value,service_type:$id('fType').value,origin:$id('fOrigin').value,destination:$id('fDest').value,contract_amount:pw($id('fCon').value),balance_amount:pw($id('fBal').value),collection_status:fColl,payment_status:fPay,notes:$id('fNote').value,
+workers:fW.map(w=>({...w,daily_rate:w.daily_rate||0,additional_pay:w.additional_pay||0})),vehicles:fV.map(v=>({vehicle_name:v.vehicle_name,plate:v.plate,vehicle_cost:v.vehicle_cost||0,distance_km:v.distance_km||0,fuel_cost:v.fuel_cost||0})),expenses:fSE.map(e=>({...e,amount:e.amount||0}))};
+if(!data.date){toast('날짜를 선택하세요');return}
+if(EID)await api('/api/sites/'+EID,'PUT',data);else await api('/api/sites','POST',data);toast(EID?'수정 완료':'등록 완료');CM=data.date.slice(0,7);goBack()}
+async function delSite(){if(!confirm('삭제?'))return;await api('/api/sites/'+EID,'DELETE');toast('삭제됨');goBack()}
+
 const EXP_CATS={regular:['차고지임대','고정인건비','지입료','보험','대출이자','구독통신','기타'],irregular:['차량정비','장비구입','마케팅','기타'],business:['접대비','복리후생','행정세무','기타']};
 function expTab(t,el){curExpTab=t;$qa('.tabs .tb').forEach(b=>b.classList.remove('on'));if(el)el.classList.add('on');loadExp()}
-async function loadExp(){
-  const url=curExpTab==='regular'?`/api/expenses?type=regular&month=${CM}`:`/api/expenses?type=${curExpTab}&month=${CM}`;
-  const exps=await api(url);const total=exps.reduce((a,e)=>a+(e.amount||0),0);
-  let h=`<div style="font-size:12px;color:var(--tx2);margin-bottom:10px">합계: <strong style="color:var(--am)">${fmtW(total)}</strong></div>`;
-  if(curExpTab==='regular'){exps.forEach(e=>{h+=`<div class="ckr"><input type="checkbox" ${e.is_checked?'checked':''} onchange="togEC(${e.id},this.checked)"><div class="ef" style="flex:1"><div class="ec2">${e.category}</div><div class="en2">${e.item||e.category}</div></div><span class="ea">${fmtW(e.amount)}</span><button class="ed" onclick="delExp(${e.id})">✕</button></div>`})}
-  else{exps.forEach(e=>{h+=`<div class="ei"><div class="ef"><div class="ec2">${e.category}${e.date?' · '+e.date.slice(5):''}</div><div class="en2">${e.item||e.category}</div>${e.note?`<div style="font-size:10px;color:var(--tx3)">${e.note}</div>`:''}</div><span class="ea">${fmtW(e.amount)}</span><button class="ed" onclick="delExp(${e.id})">✕</button></div>`})}
-  if(!exps.length)h+='<div class="empty">등록된 항목 없음</div>';$id('expC').innerHTML=h;
-}
-async function togEC(id,ck){await api(`/api/expenses/${id}`,'PUT',{is_checked:ck?1:0})}
-function openExpM(){$id('emItem').value='';$id('emAmt').value='';$id('emNote').value='';$id('emDate').value=new Date().toISOString().slice(0,10);$id('emCat').innerHTML=(EXP_CATS[curExpTab]||[]).map(c=>`<option>${c}</option>`).join('');$id('emDG').style.display=curExpTab==='regular'?'none':'block';const labels={regular:'정기지출',irregular:'비정기지출',business:'사업비지출'};$id('emT').textContent=labels[curExpTab]+' 추가';openMo('mExp')}
+async function loadExp(){const url=curExpTab==='regular'?'/api/expenses?type=regular&month='+CM:'/api/expenses?type='+curExpTab+'&month='+CM;
+const exps=await api(url);const total=exps.reduce((a,e)=>a+(e.amount||0),0);
+let h='<div style="font-size:13px;color:var(--tx2);margin-bottom:12px;font-weight:600">합계: <strong style="color:var(--am);font-size:16px">'+fmtW(total)+'</strong></div>';
+if(curExpTab==='regular'){exps.forEach(e=>{h+='<div class="ckr"><input type="checkbox" '+(e.is_checked?'checked':'')+' onchange="togEC('+e.id+',this.checked)"><div class="ef" style="flex:1"><div class="ec2">'+e.category+'</div><div class="en2">'+(e.item||e.category)+'</div></div><span class="ea">'+fmtW(e.amount)+'</span><button class="ed" onclick="delExp('+e.id+')">✕</button></div>'})}
+else{exps.forEach(e=>{h+='<div class="ei"><div class="ef"><div class="ec2">'+e.category+(e.date?' · '+e.date.slice(5):'')+'</div><div class="en2">'+(e.item||e.category)+'</div>'+(e.note?'<div style="font-size:10px;color:var(--tx3)">'+e.note+'</div>':'')+'</div><span class="ea">'+fmtW(e.amount)+'</span><button class="ed" onclick="delExp('+e.id+')">✕</button></div>'})}
+if(!exps.length)h+='<div class="empty">등록된 항목 없음</div>';$id('expC').innerHTML=h}
+async function togEC(id,ck){await api('/api/expenses/'+id,'PUT',{is_checked:ck?1:0})}
+function openExpM(){$id('emItem').value='';$id('emAmt').value='';$id('emNote').value='';$id('emDate').value=new Date().toISOString().slice(0,10);$id('emCat').innerHTML=(EXP_CATS[curExpTab]||[]).map(c=>'<option>'+c+'</option>').join('');$id('emDG').style.display=curExpTab==='regular'?'none':'block';const lb={regular:'정기지출',irregular:'비정기지출',business:'사업비지출'};$id('emT').textContent=lb[curExpTab]+' 추가';openMo('mExp')}
 async function saveExp(){const data={type:curExpTab,category:$id('emCat').value,item:$id('emItem').value,amount:pw($id('emAmt').value),note:$id('emNote').value,month:curExpTab==='regular'?CM:'',date:curExpTab!=='regular'?$id('emDate').value:'',is_checked:0};if(!data.amount){toast('금액 입력');return}await api('/api/expenses','POST',data);closeMo('mExp');toast('저장됨');loadExp()}
-async function delExp(id){if(!confirm('삭제?'))return;await api(`/api/expenses/${id}`,'DELETE');toast('삭제됨');loadExp()}
-async function loadRpt(){
-  const r=await api(`/api/report?month=${CM}`);const pc=r.netProfit>=0?'var(--gn)':'var(--rd)';
-  let h=`<div class="sg"><div class="sc"><div class="lb">총 수입</div><div class="vl" style="color:var(--gn)">${fmtW(r.totalIncome)}</div></div><div class="sc"><div class="lb">현장 수</div><div class="vl" style="color:var(--am)">${r.siteCount}건</div></div><div class="sc f"><div class="lb">순이익</div><div class="vl" style="font-size:22px;color:${pc}">${fmtW(r.netProfit)}</div></div></div>`;
-  h+=`<div class="rpt"><div class="rt">📈 수입 상세</div>`;Object.entries(r.incomeByType).forEach(([k,v])=>{h+=`<div class="rr sub"><span>${k}</span><span>${fmtW(v)}</span></div>`});h+=`<div class="rr tot"><span>수입 합계</span><span style="color:var(--gn)">${fmtW(r.totalIncome)}</span></div></div>`;
-  h+=`<div class="rpt"><div class="rt">🏗️ 현장비용</div><div class="rr sub"><span>기본일당</span><span>${fmtW(r.siteCosts.workerCost)}</span></div><div class="rr sub"><span>추가지급</span><span>${fmtW(r.siteCosts.additionalPay)}</span></div><div class="rr sub"><span>차량비용</span><span>${fmtW(r.siteCosts.vehicleCost)}</span></div><div class="rr sub"><span>유류비</span><span>${fmtW(r.siteCosts.fuelCost)}</span></div><div class="rr sub"><span>부대비용</span><span>${fmtW(r.siteCosts.siteExpense)}</span></div><div class="rr tot"><span>현장비용 합계</span><span style="color:var(--rd)">${fmtW(r.siteCosts.total)}</span></div></div>`;
-  h+=`<div class="rpt"><div class="rt">💳 경비</div>`;
-  [{label:'정기지출',data:r.expenses.regular},{label:'비정기지출',data:r.expenses.irregular},{label:'사업비지출',data:r.expenses.business}].forEach(g=>{if(g.data.items.length){h+=`<div class="rr sub" style="font-weight:700"><span>${g.label}</span><span>${fmtW(g.data.total)}</span></div>`;g.data.items.forEach(e=>{h+=`<div class="rr sub2"><span>${e.category}</span><span>${fmtW(e.total)}</span></div>`})}});
-  h+=`<div class="rr tot"><span>경비 합계</span><span style="color:var(--rd)">${fmtW(r.expenses.total)}</span></div></div>`;
-  h+=`<div class="rpt"><div class="rt">💰 수금 / 지급</div><div class="rr sub"><span>수금완료</span><span style="color:var(--gn)">${fmtW(r.collection.paid)}</span></div><div class="rr sub"><span>미수금</span><span style="color:var(--rd)">${fmtW(r.collection.unpaid)}</span></div><div class="rr sub"><span>지급완료</span><span style="color:var(--gn)">${fmtW(r.payment.paid)}</span></div><div class="rr sub"><span>미지급</span><span style="color:var(--rd)">${fmtW(r.payment.unpaid)}</span></div></div>`;
-  $id('rptC').innerHTML=h;
-}
-async function loadSet(){
-  workers=await api('/api/workers');vehicles=await api('/api/vehicles');cfg=await api('/api/settings');
-  $id('setW').innerHTML=workers.map(w=>`<div class="sti"><div class="sl"><div class="sn">${w.name}</div><div class="ss">일당 ${fmtW(w.daily_rate)}</div></div><div class="sr2"><span class="sbdg ${w.payment_method==='cash'?'cash':'trf'}">${w.payment_method==='cash'?'현금':'이체'}</span><button style="color:var(--am);font-size:12px" onclick="openWM(${w.id})">수정</button></div></div>`).join('');
-  $id('setV').innerHTML=vehicles.map(v=>`<div class="sti"><div class="sl"><div class="sn">${v.name}</div><div class="ss">${v.plate} · 연비 ${v.fuel_efficiency}km/L</div></div><div class="sr2"><button style="color:var(--am);font-size:12px" onclick="openVM(${v.id})">수정</button></div></div>`).join('');
-  $id('sDiesel').value=cfg.diesel_price||'1940';
-}
+async function delExp(id){if(!confirm('삭제?'))return;await api('/api/expenses/'+id,'DELETE');toast('삭제됨');loadExp()}
+
+async function loadRpt(){const r=await api('/api/report?month='+CM);const pc=r.netProfit>=0?'var(--gn)':'var(--rd)';const pr=r.totalIncome?Math.round(r.netProfit/r.totalIncome*100):0;
+let h='<div class="sg"><div class="sc c-gn"><div class="lb">총 수입</div><div class="vl" style="color:var(--gn)">'+fmtW(r.totalIncome)+'</div></div><div class="sc c-am"><div class="lb">현장 수</div><div class="vl" style="color:var(--am)">'+r.siteCount+'건</div></div><div class="sc f c-bl" style="text-align:center"><div class="lb">순이익 (이익률 '+pr+'%)</div><div class="vl" style="font-size:24px;color:'+pc+'">'+fmtW(r.netProfit)+'</div></div></div>';
+h+='<div class="rpt"><div class="rt">📈 수입 상세</div>';
+Object.entries(r.incomeByType).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{const p=r.totalIncome?Math.round(v/r.totalIncome*100):0;h+='<div class="rr sub"><span>'+k+' <span style="color:var(--tx3);font-size:10px">'+p+'%</span></span><span>'+fmtW(v)+'</span></div>'});
+h+='<div class="rr tot"><span>수입 합계</span><span style="color:var(--gn)">'+fmtW(r.totalIncome)+'</span></div></div>';
+h+='<div class="rpt"><div class="rt">🏗️ 현장비용</div><div class="rr sub"><span>기본일당</span><span>'+fmtW(r.siteCosts.workerCost)+'</span></div><div class="rr sub"><span>추가지급</span><span>'+fmtW(r.siteCosts.additionalPay)+'</span></div><div class="rr sub"><span>차량비용</span><span>'+fmtW(r.siteCosts.vehicleCost)+'</span></div><div class="rr sub"><span>유류비</span><span>'+fmtW(r.siteCosts.fuelCost)+'</span></div><div class="rr sub"><span>부대비용</span><span>'+fmtW(r.siteCosts.siteExpense)+'</span></div><div class="rr tot"><span>현장비용 합계</span><span style="color:var(--rd)">'+fmtW(r.siteCosts.total)+'</span></div></div>';
+h+='<div class="rpt"><div class="rt">💳 경비</div>';
+[{l:'정기지출',d:r.expenses.regular},{l:'비정기지출',d:r.expenses.irregular},{l:'사업비지출',d:r.expenses.business}].forEach(g=>{if(g.d.items.length){h+='<div class="rr sub" style="font-weight:700;color:var(--tx)"><span>'+g.l+'</span><span>'+fmtW(g.d.total)+'</span></div>';g.d.items.forEach(e=>{h+='<div class="rr sub2"><span>'+e.category+'</span><span>'+fmtW(e.total)+'</span></div>'})}});
+h+='<div class="rr tot"><span>경비 합계</span><span style="color:var(--rd)">'+fmtW(r.expenses.total)+'</span></div></div>';
+const tc=r.siteCosts.total+r.expenses.total;
+h+='<div class="rpt"><div class="rt">📊 총 비용</div><div class="rr sub"><span>현장비용</span><span>'+fmtW(r.siteCosts.total)+'</span></div><div class="rr sub"><span>경비</span><span>'+fmtW(r.expenses.total)+'</span></div><div class="rr tot"><span>총 비용</span><span style="color:var(--rd)">'+fmtW(tc)+'</span></div></div>';
+h+='<div class="rpt"><div class="rt">💰 수금 / 지급</div><div class="rr sub"><span>수금완료</span><span style="color:var(--gn)">'+fmtW(r.collection.paid)+'</span></div><div class="rr sub"><span>미수금</span><span style="color:var(--rd)">'+fmtW(r.collection.unpaid)+'</span></div><div class="divider"></div><div class="rr sub"><span>지급완료</span><span style="color:var(--gn)">'+fmtW(r.payment.paid)+'</span></div><div class="rr sub"><span>미지급</span><span style="color:var(--rd)">'+fmtW(r.payment.unpaid)+'</span></div></div>';
+$id('rptC').innerHTML=h}
+
+async function loadSet(){workers=await api('/api/workers');vehicles=await api('/api/vehicles');cfg=await api('/api/settings');
+$id('setW').innerHTML=workers.map(w=>'<div class="sti"><div class="sl"><div class="sn">'+w.name+'</div><div class="ss">일당 '+fmtW(w.daily_rate)+'</div></div><div class="sr2"><span class="sbdg '+(w.payment_method==='cash'?'cash':'trf')+'">'+(w.payment_method==='cash'?'현금':'이체')+'</span><button style="color:var(--am);font-size:12px;font-weight:600" onclick="openWM('+w.id+')">수정</button></div></div>').join('');
+$id('setV').innerHTML=vehicles.map(v=>'<div class="sti"><div class="sl"><div class="sn">'+v.name+'</div><div class="ss">'+v.plate+' · 연비 '+v.fuel_efficiency+'km/L</div></div><div class="sr2"><button style="color:var(--am);font-size:12px;font-weight:600" onclick="openVM('+v.id+')">수정</button></div></div>').join('');
+$id('sDiesel').value=cfg.diesel_price||'1940'}
 async function saveCfg(){await api('/api/settings','PUT',{diesel_price:$id('sDiesel').value})}
+
 function openWM(id){if(id){const w=workers.find(x=>x.id===id);if(!w)return;$id('wmId').value=id;$id('wmNm').value=w.name;$id('wmMt').value=w.payment_method;$id('wmRt').value=fmtW(w.daily_rate)}else{$id('wmId').value='';$id('wmNm').value='';$id('wmMt').value='transfer';$id('wmRt').value=''}openMo('mW')}
-async function saveWS(){const id=$id('wmId').value;const d={name:$id('wmNm').value.trim(),payment_method:$id('wmMt').value,daily_rate:pw($id('wmRt').value)};if(!d.name){toast('이름 입력');return}if(id)await api(`/api/workers/${id}`,'PUT',d);else await api('/api/workers','POST',d);closeMo('mW');toast('저장됨');loadSet()}
+async function saveWS(){const id=$id('wmId').value;const d={name:$id('wmNm').value.trim(),payment_method:$id('wmMt').value,daily_rate:pw($id('wmRt').value)};if(!d.name){toast('이름 입력');return}if(id)await api('/api/workers/'+id,'PUT',d);else await api('/api/workers','POST',d);closeMo('mW');toast('저장됨');loadSet()}
 function openVM(id){if(id){const v=vehicles.find(x=>x.id===id);if(!v)return;$id('vmId').value=id;$id('vmNm').value=v.name;$id('vmPl').value=v.plate;$id('vmEf').value=v.fuel_efficiency}else{$id('vmId').value='';$id('vmNm').value='';$id('vmPl').value='';$id('vmEf').value='9'}openMo('mV')}
-async function saveVS(){const id=$id('vmId').value;const d={name:$id('vmNm').value.trim(),plate:$id('vmPl').value.trim(),fuel_efficiency:parseFloat($id('vmEf').value)||9};if(!d.name){toast('차량명 입력');return}if(id)await api(`/api/vehicles/${id}`,'PUT',d);else await api('/api/vehicles','POST',d);closeMo('mV');toast('저장됨');loadSet()}
-function doExcel(){window.open(`/api/export?month=${CM}`);toast('엑셀 다운로드')}
+async function saveVS(){const id=$id('vmId').value;const d={name:$id('vmNm').value.trim(),plate:$id('vmPl').value.trim(),fuel_efficiency:parseFloat($id('vmEf').value)||9};if(!d.name){toast('차량명 입력');return}if(id)await api('/api/vehicles/'+id,'PUT',d);else await api('/api/vehicles','POST',d);closeMo('mV');toast('저장됨');loadSet()}
+function doExcel(){window.open('/api/export?month='+CM);toast('엑셀 다운로드')}
 function doBkup(){window.open('/api/backup');toast('백업 다운로드')}
-async function doRestore(e){const f=e.target.files[0];if(!f)return;if(!confirm('현재 데이터가 모두 교체됩니다.\n계속하시겠습니까?')){e.target.value='';return}try{const d=JSON.parse(await f.text());await api('/api/restore','POST',d);toast('복원 완료!');loadSites();loadSet()}catch(err){toast('복원 실패: '+err.message)}e.target.value=''}
+async function doRestore(e){const f=e.target.files[0];if(!f)return;if(!confirm('현재 데이터가 모두 교체됩니다.\n계속?')){e.target.value='';return}try{const d=JSON.parse(await f.text());await api('/api/restore','POST',d);toast('복원 완료!');loadSites();loadSet()}catch(err){toast('복원 실패')}e.target.value=''}
 (async()=>{cfg=await api('/api/settings');workers=await api('/api/workers');vehicles=await api('/api/vehicles');updML();loadSites()})();
 </script>
 </body>
